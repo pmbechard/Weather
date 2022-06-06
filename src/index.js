@@ -4,8 +4,10 @@ import './style.css';
 // TODO: use local time and other API to show forecast data
 // TODO: get list of possible descriptions and arrange matching BG photos
 // TODO: optimize parsing input for city search
+// TODO: tabs for hourly forecast and weekly forecast
 
 const cityName = document.getElementById('city');
+const currentDate = document.getElementById('date');
 const currentTemp = document.getElementById('current-temp');
 const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
@@ -13,6 +15,25 @@ const searchInput = document.getElementById('city-name');
 const searchButton = document.getElementById('search-btn');
 let celsius = true;
 const tempConvButton = document.getElementById('temp-conv-btn');
+
+const TODAY = new Date();
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY = DAYS[TODAY.getDay()];
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+const MONTH = MONTHS[TODAY.getMonth()];
 
 async function getWeatherData(city = 'Shenyang') {
   try {
@@ -30,6 +51,7 @@ async function getWeatherData(city = 'Shenyang') {
 function updateWeather(data) {
   //   console.log(data);
   cityName.textContent = data.name;
+  currentDate.textContent = `${DAY}, ${TODAY.getDate()} ${MONTH}`;
   if (celsius) {
     currentTemp.innerHTML = `${getTempC(data.main.temp)}`;
     currentFeelsLike.innerHTML = `Feels like: ${getTempC(
@@ -62,7 +84,7 @@ tempConvButton.addEventListener('click', () => {
   } else {
     celsius = true;
   }
-  getWeatherData();
+  getWeatherData(cityName.textContent);
 });
 
 getWeatherData();
