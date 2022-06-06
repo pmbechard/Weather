@@ -41,10 +41,6 @@ const forecastBoxes = document.querySelectorAll('.day');
 const forecastOrder = DAYS.slice(TODAY.getDay() + 1).concat(
   DAYS.slice(0, TODAY.getDay() + 1)
 );
-let dayCounter = 0;
-forecastBoxes.forEach((box) => {
-  box.firstElementChild.textContent = forecastOrder[dayCounter++];
-});
 
 async function getWeatherData(city = 'Shenyang') {
   try {
@@ -91,6 +87,13 @@ async function updateForecast(city) {
   );
   const forecastData = await forecastRequest.json();
   console.log(forecastData);
+
+  let dayCounter = 0;
+  forecastBoxes.forEach((box) => {
+    // TODO: create HTML elements here instead of index.html
+    box.firstElementChild.textContent = forecastOrder[dayCounter++];
+    box.firstElementChild.nextElementSibling.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
+  });
 }
 
 searchButton.addEventListener('click', () => {
