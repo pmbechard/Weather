@@ -1,9 +1,16 @@
 import './style.css';
 
+// TODO: localStorage for city and temp unit
+// TODO: use local time and other API to show forecast data
+// TODO: get list of possible descriptions and arrange matching BG photos
+// TODO: optimize parsing input for city search
+
 const cityName = document.getElementById('city');
 const currentTemp = document.getElementById('current-temp');
 const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
+const searchInput = document.getElementById('city-name');
+const searchButton = document.getElementById('search-btn');
 let celsius = true;
 const tempConvButton = document.getElementById('temp-conv-btn');
 
@@ -36,6 +43,10 @@ function updateWeather(data) {
   }
   currentDescription.textContent = data.weather[0].description;
 }
+
+searchButton.addEventListener('click', () => {
+  getWeatherData(searchInput.value);
+});
 
 function getTempC(k) {
   return `${Math.round(Number(k) - 273.15)}&deg;C`;
