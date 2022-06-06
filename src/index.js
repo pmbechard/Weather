@@ -51,6 +51,7 @@ tempConvButton.addEventListener('click', () => {
   } else {
     celsius = true;
   }
+  getWeatherData();
 });
 
 getWeatherData();
