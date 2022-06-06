@@ -10,10 +10,10 @@
   <body>
     <div class="card">
       <div class="main-info">
-        <h1>Shenyang</h1>
-        <h2>19&deg;C</h2>
-        <p>H:25&deg;C | L:16&deg;C</p>
-        <p>Thunderstorm</p>
+        <h1 id="city"></h1>
+        <h2 id="current-temp"></h2>
+        <p id="current-description"></p>
+        <p id="current-feels-like"></pid>
       </div>
       <div class="forecast">
         <div class="day">
@@ -54,7 +54,7 @@
       </div>
       <input type="text" placeholder="Toronto, CA" />
       <button>Search</button>
-      <button>&deg;C/&deg;F</button>
+      <button id="temp-conv-btn">&deg;C/&deg;F</button>
     </div>
     <footer><small>Peyton Bechard &copy; 2022</small></footer>
   </body>
