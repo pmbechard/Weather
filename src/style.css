@@ -57,9 +57,17 @@ body {
   border: 1px solid #222;
   border-radius: 8px;
   background-color: rgba(245, 245, 245, 0.3);
-  width: 30vw;
+  width: 60vw;
   padding: 1vw;
   margin: 1vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast .day h3 {
+  width: 50px;
 }
 
 .forecast .icon {

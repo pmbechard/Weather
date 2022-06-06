@@ -90,9 +90,19 @@ async function updateForecast(city) {
 
   let dayCounter = 0;
   forecastBoxes.forEach((box) => {
-    // TODO: create HTML elements here instead of index.html
-    box.firstElementChild.textContent = forecastOrder[dayCounter++];
-    box.firstElementChild.nextElementSibling.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
+    box.innerHTML = '';
+    const forecastDay = document.createElement('h3');
+    box.appendChild(forecastDay);
+    forecastDay.textContent = forecastOrder[dayCounter++];
+    const forecastImg = document.createElement('img');
+    box.appendChild(forecastImg);
+    forecastImg.classList.add('icon');
+    forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
+    const forecastHiLo = document.createElement('p');
+    box.appendChild(forecastHiLo);
+    forecastHiLo.innerHTML = `L:${getTempC(
+      forecastData.daily[dayCounter].temp.min
+    )} | H:${getTempC(forecastData.daily[dayCounter].temp.max)}`;
   });
 }
 
