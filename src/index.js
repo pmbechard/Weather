@@ -1,4 +1,5 @@
 import './style.css';
+import searchIcon from './img/search.png';
 
 // TODO: localStorage for city and temp unit
 // TODO: use local time and other API to show forecast data
@@ -15,6 +16,9 @@ const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
 const searchInput = document.getElementById('city-name');
 const searchButton = document.getElementById('search-btn');
+const searchImg = new Image();
+searchImg.src = searchIcon;
+searchButton.appendChild(searchImg);
 let celsius = true;
 const tempConvButton = document.getElementById('temp-conv-btn');
 
