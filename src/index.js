@@ -54,6 +54,7 @@ async function getWeatherData(city = 'Shenyang') {
     );
     const data = await request.json();
     updateWeather(data);
+    updateForecast(city);
   } catch (err) {
     console.log(err);
   }
@@ -76,6 +77,20 @@ function updateWeather(data) {
     )}`;
   }
   currentDescription.textContent = data.weather[0].description;
+}
+
+async function updateForecast(city) {
+  const geocode = await fetch(
+    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
+    { mode: 'cors' }
+  );
+  const geocodeData = await geocode.json();
+  const forecastRequest = await fetch(
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&appid=d35c7255a79efc255f423d8ee7ce896b`,
+    { mode: 'cors' }
+  );
+  const forecastData = await forecastRequest.json();
+  console.log(forecastData);
 }
 
 searchButton.addEventListener('click', () => {
