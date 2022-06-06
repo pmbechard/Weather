@@ -19,7 +19,7 @@
       </div>
       <div class="forecast-toggle">
           <button>Hourly</button>
-          <button>Weekly</button>  
+          <button class="selected">Weekly</button>  
       </div>
       <div class="hourly">
 
@@ -33,9 +33,11 @@
         <div class="day"></div>
         <div class="day"></div>
       </div>
-      <input id="city-name" type="text" placeholder="Change city" />
-      <button id="search-btn">&hArr;</button>
-      <button id="temp-conv-btn">&deg;C/&deg;F</button>
+      <div class="search-container">
+          <input id="city-name" type="text" placeholder="Change city" />
+          <button id="search-btn"></button>
+      </div>
+      <div class="temp-conv-container"><button id="temp-conv-btn">&deg;F</button></div>
     </div>
     <footer><small>Peyton Bechard &copy; 2022</small></footer>
   </body>
