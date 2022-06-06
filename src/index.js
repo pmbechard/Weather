@@ -2,11 +2,9 @@ import './style.css';
 import searchIcon from './img/search.png';
 
 // TODO: localStorage for city and temp unit
-// TODO: use local time and other API to show forecast data
-// use .main for category of weather
-// TODO: get list of possible descriptions and arrange matching BG photos
+// TODO: use local time and other API to show hourly forecast data
+// TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
 // TODO: optimize parsing input for city search
-// TODO: tabs for hourly forecast and weekly forecast
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
@@ -104,9 +102,15 @@ async function updateForecast(city) {
     forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
     const forecastHiLo = document.createElement('p');
     box.appendChild(forecastHiLo);
-    forecastHiLo.innerHTML = `L:${getTempC(
-      forecastData.daily[dayCounter].temp.min
-    )} | H:${getTempC(forecastData.daily[dayCounter].temp.max)}`;
+    if (celsius) {
+      forecastHiLo.innerHTML = `L:${getTempC(
+        forecastData.daily[dayCounter].temp.min
+      )} | H:${getTempC(forecastData.daily[dayCounter].temp.max)}`;
+    } else {
+      forecastHiLo.innerHTML = `L:${getTempF(
+        forecastData.daily[dayCounter].temp.min
+      )} | H:${getTempF(forecastData.daily[dayCounter].temp.max)}`;
+    }
   });
 }
 
@@ -125,8 +129,10 @@ function getTempF(k) {
 tempConvButton.addEventListener('click', () => {
   if (celsius) {
     celsius = false;
+    tempConvButton.innerHTML = '&deg;C';
   } else {
     celsius = true;
+    tempConvButton.innerHTML = '&deg;F';
   }
   getWeatherData(cityName.textContent);
 });
