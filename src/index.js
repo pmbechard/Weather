@@ -2,10 +2,12 @@ import './style.css';
 
 // TODO: localStorage for city and temp unit
 // TODO: use local time and other API to show forecast data
+// use .main for category of weather
 // TODO: get list of possible descriptions and arrange matching BG photos
 // TODO: optimize parsing input for city search
 // TODO: tabs for hourly forecast and weekly forecast
 
+const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
 const currentDate = document.getElementById('date');
 const currentTemp = document.getElementById('current-temp');
@@ -59,6 +61,7 @@ async function getWeatherData(city = 'Shenyang') {
 
 function updateWeather(data) {
   //   console.log(data);
+  currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   cityName.textContent = data.name;
   currentDate.textContent = `${DAY}, ${TODAY.getDate()} ${MONTH}`;
   if (celsius) {

@@ -36,6 +36,16 @@ body {
   padding: 20px 0px;
 }
 
+.forecast-toggle {
+  display: flex;
+  justify-content: center;
+}
+
+.forecast-toggle button {
+  width: 100px;
+  height: 30px;
+}
+
 .forecast {
   display: flex;
   justify-content: center;
