@@ -5,6 +5,7 @@ import searchIcon from './img/search.png';
 // TODO: use local time and other API to show hourly forecast data
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
 // TODO: optimize parsing input for city search
+// TODO: loading animation
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
@@ -12,6 +13,18 @@ const currentDate = document.getElementById('date');
 const currentTemp = document.getElementById('current-temp');
 const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
+
+const hourlyForecastButton = document.getElementById('hourly');
+const weeklyForecastButton = document.getElementById('weekly');
+hourlyForecastButton.addEventListener('click', () => {
+  hourlyForecastButton.classList.add('selected');
+  weeklyForecastButton.classList.remove('selected');
+});
+weeklyForecastButton.addEventListener('click', () => {
+  weeklyForecastButton.classList.add('selected');
+  hourlyForecastButton.classList.remove('selected');
+});
+
 const searchInput = document.getElementById('city-name');
 const searchButton = document.getElementById('search-btn');
 const searchImg = new Image();
@@ -113,6 +126,12 @@ async function updateForecast(city) {
     }
   });
 }
+
+searchInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    searchButton.click();
+  }
+});
 
 searchButton.addEventListener('click', () => {
   getWeatherData(searchInput.value);
