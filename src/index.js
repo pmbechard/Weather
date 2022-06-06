@@ -97,7 +97,7 @@ async function updateForecast(city) {
   );
   const geocodeData = await geocode.json();
   const forecastRequest = await fetch(
-    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&appid=d35c7255a79efc255f423d8ee7ce896b`,
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&exclude=minutely&appid=d35c7255a79efc255f423d8ee7ce896b`,
     { mode: 'cors' }
   );
   const forecastData = await forecastRequest.json();
