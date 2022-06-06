@@ -35,6 +35,15 @@ const MONTHS = [
 ];
 const MONTH = MONTHS[TODAY.getMonth()];
 
+const forecastBoxes = document.querySelectorAll('.day');
+const forecastOrder = DAYS.slice(TODAY.getDay() + 1).concat(
+  DAYS.slice(0, TODAY.getDay() + 1)
+);
+let dayCounter = 0;
+forecastBoxes.forEach((box) => {
+  box.firstElementChild.textContent = forecastOrder[dayCounter++];
+});
+
 async function getWeatherData(city = 'Shenyang') {
   try {
     const request = await fetch(
