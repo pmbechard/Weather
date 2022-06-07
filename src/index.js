@@ -122,7 +122,7 @@ async function updateForecast(city) {
     { mode: 'cors' }
   );
   const forecastData = await forecastRequest.json();
-  console.log(forecastData);
+  //   console.log(forecastData);
 
   hourlyForecastArea.innerHTML = '';
   for (let i = TODAY.getHours(); i < 24 + TODAY.getHours(); i++) {
@@ -131,7 +131,7 @@ async function updateForecast(city) {
     hourlyForecastArea.appendChild(hourContainer);
     const time = document.createElement('h3');
     hourContainer.appendChild(time);
-    time.textContent = `${i}:00`;
+    time.textContent = `${i % 24}:00`;
     const forecastImg = document.createElement('img');
     hourContainer.appendChild(forecastImg);
     forecastImg.classList.add('icon');
