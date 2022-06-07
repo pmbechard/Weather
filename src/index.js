@@ -30,8 +30,21 @@ const searchButton = document.getElementById('search-btn');
 const searchImg = new Image();
 searchImg.src = searchIcon;
 searchButton.appendChild(searchImg);
-let celsius = true;
+
 const tempConvButton = document.getElementById('temp-conv-btn');
+let celsius;
+if (
+  localStorage.getItem('unit') === null ||
+  localStorage.getItem('unit') === 'c'
+) {
+  celsius = true;
+  localStorage.setItem('unit', 'c');
+  tempConvButton.innerHTML = '&deg;F';
+} else if (localStorage.getItem('unit') === 'f') {
+  celsius = false;
+  localStorage.setItem('unit', 'f');
+  tempConvButton.innerHTML = '&deg;C';
+}
 
 const TODAY = new Date();
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -149,9 +162,11 @@ tempConvButton.addEventListener('click', () => {
   if (celsius) {
     celsius = false;
     tempConvButton.innerHTML = '&deg;C';
+    localStorage.setItem('unit', 'f');
   } else {
     celsius = true;
     tempConvButton.innerHTML = '&deg;F';
+    localStorage.setItem('unit', 'c');
   }
   getWeatherData(cityName.textContent);
 });

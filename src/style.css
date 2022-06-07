@@ -88,7 +88,7 @@ input {
   height: 5vh;
   border: none;
   border-radius: 8px;
-  margin: 1vw;
+  margin-top: 10px;
 }
 
 input:focus-visible {
