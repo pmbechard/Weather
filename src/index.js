@@ -14,6 +14,7 @@ const currentTemp = document.getElementById('current-temp');
 const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
 
+const hourlyForecastArea = document.querySelector('.hourly');
 const hourlyForecastButton = document.getElementById('hourly');
 const weeklyForecastButton = document.getElementById('weekly');
 const hourlyDisplay = document.querySelector('.hourly');
@@ -21,7 +22,7 @@ const weeklyDisplay = document.querySelector('.weekly');
 hourlyForecastButton.addEventListener('click', () => {
   hourlyForecastButton.classList.add('selected');
   weeklyForecastButton.classList.remove('selected');
-  hourlyDisplay.style.display = 'inline';
+  hourlyDisplay.style.display = 'grid';
   weeklyDisplay.style.display = 'none';
 });
 weeklyForecastButton.addEventListener('click', () => {
@@ -123,6 +124,28 @@ async function updateForecast(city) {
   const forecastData = await forecastRequest.json();
   console.log(forecastData);
 
+  hourlyForecastArea.innerHTML = '';
+  for (let i = TODAY.getHours(); i < 24 + TODAY.getHours(); i++) {
+    const hourContainer = document.createElement('div');
+    hourContainer.classList.add('hour');
+    hourlyForecastArea.appendChild(hourContainer);
+    const time = document.createElement('h3');
+    hourContainer.appendChild(time);
+    time.textContent = `${i}:00`;
+    const forecastImg = document.createElement('img');
+    hourContainer.appendChild(forecastImg);
+    forecastImg.classList.add('icon');
+    forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.hourly[i].weather[0].icon}@2x.png`;
+    const temp = document.createElement('p');
+    hourContainer.appendChild(temp);
+    if (celsius) {
+      temp.innerHTML = `${getTempC(forecastData.hourly[i].temp)}`;
+    } else {
+      temp.innerHTML = `${getTempF(forecastData.hourly[i].temp)}`;
+    }
+  }
+
+  // TODO: refactor to create div elements here
   let dayCounter = 0;
   forecastBoxes.forEach((box) => {
     box.innerHTML = '';
