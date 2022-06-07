@@ -71,6 +71,7 @@ const forecastOrder = DAYS.slice(TODAY.getDay() + 1).concat(
 );
 
 async function getWeatherData(city = 'Shenyang') {
+  localStorage.setItem('city', city);
   try {
     const request = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
@@ -171,4 +172,8 @@ tempConvButton.addEventListener('click', () => {
   getWeatherData(cityName.textContent);
 });
 
-getWeatherData();
+if (localStorage.getItem('city')) {
+  getWeatherData(localStorage.getItem('city'));
+} else {
+  getWeatherData();
+}
