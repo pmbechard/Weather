@@ -1,8 +1,8 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
-// TODO: localStorage for city and temp unit
 // TODO: use local time and other API to show hourly forecast data
+// TODO: add date/time of selected city, maybe country name too?
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
 // TODO: optimize parsing input for city search
 // TODO: loading animation
@@ -16,13 +16,19 @@ const currentDescription = document.getElementById('current-description');
 
 const hourlyForecastButton = document.getElementById('hourly');
 const weeklyForecastButton = document.getElementById('weekly');
+const hourlyDisplay = document.querySelector('.hourly');
+const weeklyDisplay = document.querySelector('.weekly');
 hourlyForecastButton.addEventListener('click', () => {
   hourlyForecastButton.classList.add('selected');
   weeklyForecastButton.classList.remove('selected');
+  hourlyDisplay.style.display = 'inline';
+  weeklyDisplay.style.display = 'none';
 });
 weeklyForecastButton.addEventListener('click', () => {
   weeklyForecastButton.classList.add('selected');
   hourlyForecastButton.classList.remove('selected');
+  weeklyDisplay.style.display = 'inline';
+  hourlyDisplay.style.display = 'none';
 });
 
 const searchInput = document.getElementById('city-name');
@@ -70,7 +76,7 @@ const forecastOrder = DAYS.slice(TODAY.getDay() + 1).concat(
   DAYS.slice(0, TODAY.getDay() + 1)
 );
 
-async function getWeatherData(city = 'Shenyang') {
+async function getWeatherData(city = 'Ottawa') {
   localStorage.setItem('city', city);
   try {
     const request = await fetch(
@@ -111,7 +117,7 @@ async function updateForecast(city) {
   );
   const geocodeData = await geocode.json();
   const forecastRequest = await fetch(
-    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&exclude=minutely&appid=d35c7255a79efc255f423d8ee7ce896b`,
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&exclude=current,alerts,minutely&appid=d35c7255a79efc255f423d8ee7ce896b`,
     { mode: 'cors' }
   );
   const forecastData = await forecastRequest.json();

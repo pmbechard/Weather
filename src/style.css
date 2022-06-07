@@ -62,6 +62,14 @@ body {
   flex-wrap: wrap;
 }
 
+.weekly {
+  display: none;
+}
+
+.hourly {
+  display: inline;
+}
+
 .forecast .day {
   border-bottom: 1px solid #222;
   border-radius: 8px;
