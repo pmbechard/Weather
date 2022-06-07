@@ -1,15 +1,15 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
-// TODO: use local time and other API to show hourly forecast data
-// TODO: add date/time of selected city, maybe country name too?
+// TODO: add country name too
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
-// TODO: optimize parsing input for city search
 // TODO: loading animation
+// TODO: add error message for invalid city name
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
 const currentDate = document.getElementById('date');
+const currentTime = document.getElementById('time');
 const currentTemp = document.getElementById('current-temp');
 const currentFeelsLike = document.getElementById('current-feels-like');
 const currentDescription = document.getElementById('current-description');
@@ -53,9 +53,9 @@ if (
   tempConvButton.innerHTML = '&deg;C';
 }
 
-const TODAY = new Date();
+let today = new Date();
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const DAY = DAYS[TODAY.getDay()];
+const DAY = DAYS[today.getDay()];
 const MONTHS = [
   'Jan',
   'Feb',
@@ -70,11 +70,11 @@ const MONTHS = [
   'Nov',
   'Dec',
 ];
-const MONTH = MONTHS[TODAY.getMonth()];
+const MONTH = MONTHS[today.getMonth()];
 
 const forecastBoxes = document.querySelectorAll('.day');
-const forecastOrder = DAYS.slice(TODAY.getDay() + 1).concat(
-  DAYS.slice(0, TODAY.getDay() + 1)
+const forecastOrder = DAYS.slice(today.getDay() + 1).concat(
+  DAYS.slice(0, today.getDay() + 1)
 );
 
 async function getWeatherData(city = 'Ottawa') {
@@ -94,9 +94,11 @@ async function getWeatherData(city = 'Ottawa') {
 
 function updateWeather(data) {
   //   console.log(data);
+  today = new Date(data.dt * 1000);
   currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   cityName.textContent = data.name;
-  currentDate.textContent = `${DAY}, ${TODAY.getDate()} ${MONTH}`;
+  //   currentDate.textContent = `${DAY}, ${today.getDate()} ${MONTH}`;
+  //   currentTime.textContent = today.toLocaleTimeString();
   if (celsius) {
     currentTemp.innerHTML = `${getTempC(data.main.temp)}`;
     currentFeelsLike.innerHTML = `Feels like: ${getTempC(
@@ -123,9 +125,32 @@ async function updateForecast(city) {
   );
   const forecastData = await forecastRequest.json();
   //   console.log(forecastData);
+  let localDate = today.toLocaleString('en-US', {
+    timeZone: forecastData.timezone,
+  });
+  localDate = localDate.split(' ');
+  today.setDate(localDate[0].split('/')[1]);
+  if (localDate[2] === 'AM') {
+    today.setHours(localDate[1].split(':')[0]);
+  } else {
+    today.setHours(Number(localDate[1].split(':')[0]) + 12);
+  }
+  today.setMinutes(localDate[1].split(':')[1]);
+  today.setSeconds(localDate[1].split(':')[2]);
+  currentDate.textContent = `${
+    DAYS[today.getDay()]
+  }, ${today.getDate()} ${MONTH}`;
+  // TODO: make clock active
+  currentTime.textContent =
+    today
+      .toLocaleTimeString('en-US', {
+        timeZone: forecastData.timezone,
+      })
+      .slice(0, -2) + localDate[2];
+  today.setSeconds(today.getSeconds() + 1);
 
   hourlyForecastArea.innerHTML = '';
-  for (let i = TODAY.getHours(); i < 24 + TODAY.getHours(); i++) {
+  for (let i = today.getHours(); i < 24 + today.getHours(); i++) {
     const hourContainer = document.createElement('div');
     hourContainer.classList.add('hour');
     hourlyForecastArea.appendChild(hourContainer);
