@@ -8,6 +8,7 @@ import searchIcon from './img/search.png';
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
+const flag = document.getElementById('flag');
 const currentDate = document.getElementById('date');
 const currentTime = document.getElementById('time');
 const currentTemp = document.getElementById('current-temp');
@@ -94,6 +95,7 @@ async function getWeatherData(city = 'Ottawa') {
 
 function updateWeather(data) {
   //   console.log(data);
+  flag.src = `https://countryflagsapi.com/png/${data.sys.country}`;
   today = new Date(data.dt * 1000);
   currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   cityName.textContent = data.name;
