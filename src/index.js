@@ -2,7 +2,7 @@ import './style.css';
 import searchIcon from './img/search.png';
 
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
-// TODO: add error message for invalid city name
+// FIXME: Hourly forecast doesn't always line up
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
@@ -82,12 +82,20 @@ async function getWeatherData(city = 'Ottawa') {
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
       { mode: 'cors' }
     );
+    if (!request.ok) {
+      throw 'Invalid';
+    }
     const data = await request.json();
     updateWeather(data);
     updateForecast(city);
     localStorage.setItem('city', city);
   } catch (err) {
     console.log('updateWeather : ' + err);
+    searchInput.style.backgroundColor = 'rgba(153, 0, 0, 0.4)';
+    searchInput.addEventListener('input', () => {
+      searchInput.style.backgroundColor = 'white';
+    });
+    getWeatherData();
   }
 }
 
