@@ -2,7 +2,6 @@ import './style.css';
 import searchIcon from './img/search.png';
 
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
-// TODO: loading animation
 // TODO: add error message for invalid city name
 
 const currentWeatherIcon = document.getElementById('weather-icon');
@@ -78,7 +77,6 @@ const forecastOrder = DAYS.slice(today.getDay() + 1).concat(
 );
 
 async function getWeatherData(city = 'Ottawa') {
-  localStorage.setItem('city', city);
   try {
     const request = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
@@ -87,116 +85,122 @@ async function getWeatherData(city = 'Ottawa') {
     const data = await request.json();
     updateWeather(data);
     updateForecast(city);
+    localStorage.setItem('city', city);
   } catch (err) {
-    console.log(err);
+    console.log('updateWeather : ' + err);
   }
 }
 
 function updateWeather(data) {
   //   console.log(data);
-  flag.src = `https://countryflagsapi.com/png/${data.sys.country}`;
-  today = new Date(data.dt * 1000);
-  currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-  cityName.textContent = data.name;
-  //   currentDate.textContent = `${DAY}, ${today.getDate()} ${MONTH}`;
-  //   currentTime.textContent = today.toLocaleTimeString();
-  if (celsius) {
-    currentTemp.innerHTML = `${getTempC(data.main.temp)}`;
-    currentFeelsLike.innerHTML = `Feels like: ${getTempC(
-      data.main.feels_like
-    )}`;
-  } else {
-    currentTemp.innerHTML = `${getTempF(data.main.temp)}`;
-    currentFeelsLike.innerHTML = `Feels like: ${getTempF(
-      data.main.feels_like
-    )}`;
+  try {
+    flag.src = `https://countryflagsapi.com/png/${data.sys.country}`;
+    today = new Date(data.dt * 1000);
+    currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    cityName.textContent = data.name;
+    if (celsius) {
+      currentTemp.innerHTML = `${getTempC(data.main.temp)}`;
+      currentFeelsLike.innerHTML = `Feels like: ${getTempC(
+        data.main.feels_like
+      )}`;
+    } else {
+      currentTemp.innerHTML = `${getTempF(data.main.temp)}`;
+      currentFeelsLike.innerHTML = `Feels like: ${getTempF(
+        data.main.feels_like
+      )}`;
+    }
+    currentDescription.textContent = data.weather[0].description;
+  } catch (err) {
+    console.log('updateWeather : ' + err);
   }
-  currentDescription.textContent = data.weather[0].description;
 }
 
 async function updateForecast(city) {
-  const geocode = await fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
-    { mode: 'cors' }
-  );
-  const geocodeData = await geocode.json();
-  const forecastRequest = await fetch(
-    `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&exclude=current,alerts,minutely&appid=d35c7255a79efc255f423d8ee7ce896b`,
-    { mode: 'cors' }
-  );
-  const forecastData = await forecastRequest.json();
-  //   console.log(forecastData);
-  let localDate = today.toLocaleString('en-US', {
-    timeZone: forecastData.timezone,
-  });
-  localDate = localDate.split(' ');
-  today.setDate(localDate[0].split('/')[1]);
-  if (localDate[2] === 'AM') {
-    today.setHours(localDate[1].split(':')[0]);
-  } else {
-    today.setHours(Number(localDate[1].split(':')[0]) + 12);
-  }
-  today.setMinutes(localDate[1].split(':')[1]);
-  today.setSeconds(localDate[1].split(':')[2]);
-  currentDate.textContent = `${
-    DAYS[today.getDay()]
-  }, ${today.getDate()} ${MONTH}`;
-  // TODO: make clock active
-  currentTime.textContent =
-    'As of ' +
-    today
-      .toLocaleTimeString('en-US', {
-        timeZone: forecastData.timezone,
-      })
-      .slice(0, -6) +
-    ' ' +
-    localDate[2];
-  today.setSeconds(today.getSeconds() + 1);
-
-  hourlyForecastArea.innerHTML = '';
-  for (let i = today.getHours(); i < 24 + today.getHours(); i++) {
-    const hourContainer = document.createElement('div');
-    hourContainer.classList.add('hour');
-    hourlyForecastArea.appendChild(hourContainer);
-    const time = document.createElement('h3');
-    hourContainer.appendChild(time);
-    time.textContent = `${i % 24}:00`;
-    const forecastImg = document.createElement('img');
-    hourContainer.appendChild(forecastImg);
-    forecastImg.classList.add('icon');
-    forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.hourly[i].weather[0].icon}@2x.png`;
-    const temp = document.createElement('p');
-    hourContainer.appendChild(temp);
-    if (celsius) {
-      temp.innerHTML = `${getTempC(forecastData.hourly[i].temp)}`;
+  try {
+    const geocode = await fetch(
+      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
+      { mode: 'cors' }
+    );
+    const geocodeData = await geocode.json();
+    const forecastRequest = await fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${geocodeData[0].lat}&lon=${geocodeData[0].lon}&exclude=current,alerts,minutely&appid=d35c7255a79efc255f423d8ee7ce896b`,
+      { mode: 'cors' }
+    );
+    const forecastData = await forecastRequest.json();
+    //   console.log(forecastData);
+    let localDate = today.toLocaleString('en-US', {
+      timeZone: forecastData.timezone,
+    });
+    localDate = localDate.split(' ');
+    today.setDate(localDate[0].split('/')[1]);
+    if (localDate[2] === 'AM') {
+      today.setHours(localDate[1].split(':')[0]);
     } else {
-      temp.innerHTML = `${getTempF(forecastData.hourly[i].temp)}`;
+      today.setHours(Number(localDate[1].split(':')[0]) + 12);
     }
-  }
+    today.setMinutes(localDate[1].split(':')[1]);
+    today.setSeconds(localDate[1].split(':')[2]);
+    currentDate.textContent = `${
+      DAYS[today.getDay()]
+    }, ${today.getDate()} ${MONTH}`;
+    currentTime.textContent =
+      'As of ' +
+      today
+        .toLocaleTimeString('en-US', {
+          timeZone: forecastData.timezone,
+        })
+        .slice(0, -6) +
+      ' ' +
+      localDate[2];
+    today.setSeconds(today.getSeconds() + 1);
 
-  // TODO: refactor to create div elements here
-  let dayCounter = 0;
-  forecastBoxes.forEach((box) => {
-    box.innerHTML = '';
-    const forecastDay = document.createElement('h3');
-    box.appendChild(forecastDay);
-    forecastDay.textContent = forecastOrder[dayCounter++];
-    const forecastImg = document.createElement('img');
-    box.appendChild(forecastImg);
-    forecastImg.classList.add('icon');
-    forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
-    const forecastHiLo = document.createElement('p');
-    box.appendChild(forecastHiLo);
-    if (celsius) {
-      forecastHiLo.innerHTML = `L:${getTempC(
-        forecastData.daily[dayCounter].temp.min
-      )} | H:${getTempC(forecastData.daily[dayCounter].temp.max)}`;
-    } else {
-      forecastHiLo.innerHTML = `L:${getTempF(
-        forecastData.daily[dayCounter].temp.min
-      )} | H:${getTempF(forecastData.daily[dayCounter].temp.max)}`;
+    hourlyForecastArea.innerHTML = '';
+    for (let i = today.getHours(); i < 24 + today.getHours(); i++) {
+      const hourContainer = document.createElement('div');
+      hourContainer.classList.add('hour');
+      hourlyForecastArea.appendChild(hourContainer);
+      const time = document.createElement('h3');
+      hourContainer.appendChild(time);
+      time.textContent = `${i % 24}:00`;
+      const forecastImg = document.createElement('img');
+      hourContainer.appendChild(forecastImg);
+      forecastImg.classList.add('icon');
+      forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.hourly[i].weather[0].icon}@2x.png`;
+      const temp = document.createElement('p');
+      hourContainer.appendChild(temp);
+      if (celsius) {
+        temp.innerHTML = `${getTempC(forecastData.hourly[i].temp)}`;
+      } else {
+        temp.innerHTML = `${getTempF(forecastData.hourly[i].temp)}`;
+      }
     }
-  });
+
+    // TODO: refactor to create div elements here
+    let dayCounter = 0;
+    forecastBoxes.forEach((box) => {
+      box.innerHTML = '';
+      const forecastDay = document.createElement('h3');
+      box.appendChild(forecastDay);
+      forecastDay.textContent = forecastOrder[dayCounter++];
+      const forecastImg = document.createElement('img');
+      box.appendChild(forecastImg);
+      forecastImg.classList.add('icon');
+      forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
+      const forecastHiLo = document.createElement('p');
+      box.appendChild(forecastHiLo);
+      if (celsius) {
+        forecastHiLo.innerHTML = `L:${getTempC(
+          forecastData.daily[dayCounter].temp.min
+        )} | H:${getTempC(forecastData.daily[dayCounter].temp.max)}`;
+      } else {
+        forecastHiLo.innerHTML = `L:${getTempF(
+          forecastData.daily[dayCounter].temp.min
+        )} | H:${getTempF(forecastData.daily[dayCounter].temp.max)}`;
+      }
+    });
+  } catch (err) {
+    console.log('updateForecast : ' + err);
+  }
 }
 
 searchInput.addEventListener('keypress', (event) => {
@@ -227,7 +231,7 @@ tempConvButton.addEventListener('click', () => {
     tempConvButton.innerHTML = '&deg;F';
     localStorage.setItem('unit', 'c');
   }
-  getWeatherData(cityName.textContent);
+  getWeatherData(`${cityName.textContent}, ${flag.src.slice(-2)}`);
 });
 
 if (localStorage.getItem('city')) {
