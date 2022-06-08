@@ -1,7 +1,6 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
-// TODO: add country name too
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
 // TODO: loading animation
 // TODO: add error message for invalid city name
@@ -144,11 +143,14 @@ async function updateForecast(city) {
   }, ${today.getDate()} ${MONTH}`;
   // TODO: make clock active
   currentTime.textContent =
+    'As of ' +
     today
       .toLocaleTimeString('en-US', {
         timeZone: forecastData.timezone,
       })
-      .slice(0, -2) + localDate[2];
+      .slice(0, -6) +
+    ' ' +
+    localDate[2];
   today.setSeconds(today.getSeconds() + 1);
 
   hourlyForecastArea.innerHTML = '';
