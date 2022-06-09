@@ -2,7 +2,7 @@ import './style.css';
 import searchIcon from './img/search.png';
 
 // TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
-// FIXME: Hourly forecast doesn't always line up
+// FIXME: Catch and handle connection error
 
 const currentWeatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
@@ -147,20 +147,15 @@ async function updateForecast(city) {
       today.setHours(Number(localDate[1].split(':')[0]) + 12);
     }
     today.setMinutes(localDate[1].split(':')[1]);
-    today.setSeconds(localDate[1].split(':')[2]);
     currentDate.textContent = `${
       DAYS[today.getDay()]
     }, ${today.getDate()} ${MONTH}`;
-    currentTime.textContent =
-      'As of ' +
-      today
-        .toLocaleTimeString('en-US', {
-          timeZone: forecastData.timezone,
-        })
-        .slice(0, -6) +
-      ' ' +
-      localDate[2];
-    today.setSeconds(today.getSeconds() + 1);
+    let nowTime =
+      String(today.getMinutes()).length == 2
+        ? `As of ${today.getHours()}:${today.getMinutes()}`
+        : `As of ${today.getHours()}:0${today.getMinutes()}`;
+    nowTime = Number(today.getHours()) > 12 ? nowTime + 'pm' : nowTime + 'am';
+    currentTime.textContent = nowTime;
 
     hourlyForecastArea.innerHTML = '';
     for (let i = today.getHours(); i < 24 + today.getHours(); i++) {
