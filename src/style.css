@@ -223,3 +223,31 @@ button:active {
 footer {
   margin-top: 20px;
 }
+
+@media screen and (min-width: 1000px) {
+  .hourly {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .hour {
+    width: 100px;
+    height: 200px;
+    padding: 1vw;
+    margin: 3px;
+  }
+
+  /* .forecast .day {
+    border-bottom: 1px solid #222;
+    border-radius: 8px;
+    background-color: rgba(245, 245, 245, 0.1);
+    width: 60vw;
+    padding: 1vw;
+    margin: 3px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+}

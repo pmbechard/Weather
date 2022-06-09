@@ -125,7 +125,7 @@ function updateWeather(data) {
       body.classList.add('atm-bg');
     } else if (data.weather[0].main === 'Clear') {
       body.classList = '';
-      if (today.getHours() > 6 && today.getHours() < 8) {
+      if (today.getHours() > 6 && today.getHours() < 20) {
         body.classList.add('clear-day-bg');
       } else {
         body.classList.add('clear-night-bg');
