@@ -15,6 +15,7 @@
 }
 
 body {
+  min-height: 100vh;
   margin: 30px;
 
   background-color: #222;
