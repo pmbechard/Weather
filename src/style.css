@@ -19,7 +19,7 @@ body {
   margin: 30px;
 
   background-color: #222;
-  background-image: url('./img/storm.jpg');
+  background-image: url('./img/clear-day.jpg');
   background-size: cover;
 
   display: flex;
@@ -27,6 +27,31 @@ body {
   align-items: center;
   flex-direction: column;
 }
+
+/* Poor fix */
+.atm-bg {
+  background-image: url('./img/atmosphere.jpg');
+}
+.clear-day-bg {
+  background-image: url('./img/clear-day.jpg');
+}
+.clear-night-bg {
+  background-image: url('./img/clear-night.jpg');
+}
+.cloud-bg {
+  background-image: url('./img/cloud.jpg');
+}
+.rain-bg {
+  background-image: url('./img/rain.jpg');
+}
+.snow-bg {
+  background-image: url('./img/snow.jpg');
+}
+.storm-bg {
+  background-image: url('./img/storm.jpg');
+}
+
+/* End poor fix */
 
 .card {
   display: flex;

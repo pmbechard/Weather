@@ -1,7 +1,7 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
-// TODO: get list of possible descriptions and arrange matching BG photos (use .main for category of weather)
+// TODO: Fix desktop view
 // FIXME: Catch and handle connection error
 
 const currentWeatherIcon = document.getElementById('weather-icon');
@@ -101,6 +101,7 @@ async function getWeatherData(city = 'Ottawa') {
 
 function updateWeather(data) {
   //   console.log(data);
+
   try {
     flag.src = `https://countryflagsapi.com/png/${data.sys.country}`;
     today = new Date(data.dt * 1000);
@@ -117,6 +118,35 @@ function updateWeather(data) {
         data.main.feels_like
       )}`;
     }
+
+    const body = document.body;
+    if (data.weather[0].main === 'Atmosphere') {
+      body.classList = '';
+      body.classList.add('atm-bg');
+    } else if (data.weather[0].main === 'Clear') {
+      body.classList = '';
+      if (today.getHours() > 6 && today.getHours() < 8) {
+        body.classList.add('clear-day-bg');
+      } else {
+        body.classList.add('clear-night-bg');
+      }
+    } else if (data.weather[0].main === 'Clouds') {
+      body.classList = '';
+      body.classList.add('cloud-bg');
+    } else if (
+      data.weather[0].main === 'Rain' ||
+      data.weather[0].main === 'Drizzle'
+    ) {
+      body.classList = '';
+      body.classList.add('rain-bg');
+    } else if (data.weather[0].main === 'Snow') {
+      body.classList = '';
+      body.classList.add('snow-bg');
+    } else if (data.weather[0].main === 'Thunderstorm') {
+      body.classList = '';
+      body.classList.add('storm-bg');
+    }
+
     currentDescription.textContent = data.weather[0].description;
   } catch (err) {
     console.log('updateWeather : ' + err);
