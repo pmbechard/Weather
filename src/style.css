@@ -78,6 +78,7 @@ body {
 }
 
 .forecast-toggle button {
+  color: #222;
   width: 100px;
   height: 30px;
 }

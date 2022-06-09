@@ -1,6 +1,7 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
+// TODO: Refactor functions
 // FIXME: Catch and handle connection error
 
 const currentWeatherIcon = document.getElementById('weather-icon');
