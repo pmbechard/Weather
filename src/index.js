@@ -1,7 +1,6 @@
 import './style.css';
 import searchIcon from './img/search.png';
 
-// TODO: Fix desktop view
 // FIXME: Catch and handle connection error
 
 const currentWeatherIcon = document.getElementById('weather-icon');
@@ -105,7 +104,7 @@ function updateWeather(data) {
   try {
     flag.src = `https://countryflagsapi.com/png/${data.sys.country}`;
     today = new Date(data.dt * 1000);
-    currentWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    currentWeatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     cityName.textContent = data.name;
     if (celsius) {
       currentTemp.innerHTML = `${getTempC(data.main.temp)}`;
@@ -156,7 +155,7 @@ function updateWeather(data) {
 async function updateForecast(city) {
   try {
     const geocode = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
+      `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=d35c7255a79efc255f423d8ee7ce896b`,
       { mode: 'cors' }
     );
     const geocodeData = await geocode.json();
@@ -198,7 +197,7 @@ async function updateForecast(city) {
       const forecastImg = document.createElement('img');
       hourContainer.appendChild(forecastImg);
       forecastImg.classList.add('icon');
-      forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.hourly[i].weather[0].icon}@2x.png`;
+      forecastImg.src = `https://openweathermap.org/img/wn/${forecastData.hourly[i].weather[0].icon}@2x.png`;
       const temp = document.createElement('p');
       hourContainer.appendChild(temp);
       if (celsius) {
@@ -218,7 +217,7 @@ async function updateForecast(city) {
       const forecastImg = document.createElement('img');
       box.appendChild(forecastImg);
       forecastImg.classList.add('icon');
-      forecastImg.src = `http://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
+      forecastImg.src = `https://openweathermap.org/img/wn/${forecastData.daily[dayCounter].weather[0].icon}@2x.png`;
       const forecastHiLo = document.createElement('p');
       box.appendChild(forecastHiLo);
       if (celsius) {
