@@ -1,5 +1,6 @@
 import './style.css';
 import searchIcon from './img/search.png';
+import githubIcon from './img/github.png';
 
 // TODO: Refactor functions
 // FIXME: Catch and handle connection error
@@ -36,6 +37,16 @@ const searchButton = document.getElementById('search-btn');
 const searchImg = new Image();
 searchImg.src = searchIcon;
 searchButton.appendChild(searchImg);
+
+const footerText = document.getElementById('footer-text');
+const linkTag = document.createElement('a');
+linkTag.href = 'https://github.com/pmbechard/Weather';
+const ghLink = new Image();
+ghLink.classList.add('gh-link');
+ghLink.src = githubIcon;
+ghLink.style.margin = '0 5px';
+footerText.appendChild(linkTag);
+linkTag.appendChild(ghLink);
 
 const tempConvButton = document.getElementById('temp-conv-btn');
 let celsius;
