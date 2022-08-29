@@ -4,4 +4,4 @@ A weather application that shows current weather, the hourly forecast, and the w
 
 Made with JavaScript, Webpack, and the [Open Weather API](https://openweathermap.org/api).
 
-<img src='./preview.png' alt='preview' height='200px' />
+<img src='./preview.png' alt='preview' height='1000px' />
